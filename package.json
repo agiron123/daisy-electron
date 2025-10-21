@@ -1,0 +1,63 @@
+{
+  "name": "daisy-electron",
+  "version": "1.0.0",
+  "description": "Electron app with React, TypeScript, Tailwind CSS, and DaisyUI",
+  "main": "main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "electron:dev": "NODE_ENV=development electron .",
+    "electron:build": "npm run build && electron-builder",
+    "compile": "tsc main.ts --outDir . --module commonjs --target es2020 --esModuleInterop --skipLibCheck",
+    "start": "npm run compile && npm run electron:dev",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage"
+  },
+  "keywords": [
+    "electron",
+    "react",
+    "typescript",
+    "tailwindcss",
+    "daisyui"
+  ],
+  "author": "Andre Giron",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.15",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^24.9.0",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "@vitejs/plugin-react": "^5.0.4",
+    "@vitest/ui": "^3.2.4",
+    "daisyui": "^5.3.7",
+    "electron": "^38.3.0",
+    "electron-builder": "^26.0.12",
+    "happy-dom": "^20.0.7",
+    "jsdom": "^27.0.1",
+    "tailwindcss": "^4.1.15",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.11",
+    "vitest": "^3.2.4"
+  },
+  "build": {
+    "appId": "com.daisy-electron.app",
+    "files": [
+      "dist/**/*",
+      "main.js"
+    ],
+    "directories": {
+      "output": "release"
+    }
+  }
+}
