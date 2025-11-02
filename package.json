@@ -11,6 +11,8 @@
     "electron:build": "npm run build && electron-builder",
     "compile": "tsc main.ts --outDir . --module commonjs --target es2020 --esModuleInterop --skipLibCheck",
     "start": "npm run compile && npm run electron:dev",
+    "start:dev": "echo hello",
+    "start:all": "concurrently 'npm run dev' 'npm run start dev'",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
