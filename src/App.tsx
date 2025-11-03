@@ -17,9 +17,9 @@ function App() {
     setCount(0)
   }
 
-  // if (!isLoggedIn) {
-  //   return <Login onLogin={handleLogin} />
-  // }
+  if (!isLoggedIn) {
+    return <Login onLogin={handleLogin} />
+  }
 
   return (
     <div className="min-h-screen bg-base-200 flex items-center justify-center">
