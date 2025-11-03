@@ -1,0 +1,82 @@
+name: Validate Build Config
+
+on:
+  push:
+    paths:
+      - 'package.json'
+      - 'electron-builder.json'
+      - '.github/workflows/**'
+  pull_request:
+    paths:
+      - 'package.json'
+      - 'electron-builder.json'
+      - '.github/workflows/**'
+
+jobs:
+  validate-config:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22.x'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Validate package.json
+      run: |
+        echo "Validating package.json structure..."
+        node -e "
+          const pkg = require('./package.json');
+          console.log('✓ Package name:', pkg.name);
+          console.log('✓ Version:', pkg.version);
+          console.log('✓ Main entry:', pkg.main);
+          
+          if (!pkg.build) {
+            console.error('❌ Missing build configuration');
+            process.exit(1);
+          }
+          
+          console.log('✓ Build config found');
+          console.log('✓ App ID:', pkg.build.appId);
+          console.log('✓ Files:', pkg.build.files);
+          console.log('✓ Output dir:', pkg.build.directories?.output || 'dist');
+        "
+    
+    - name: Check required scripts
+      run: |
+        echo "Checking required npm scripts..."
+        node -e "
+          const pkg = require('./package.json');
+          const required = ['dev', 'build', 'compile', 'start', 'electron:build', 'test', 'test:run'];
+          
+          required.forEach(script => {
+            if (pkg.scripts[script]) {
+              console.log('✓', script, ':', pkg.scripts[script]);
+            } else {
+              console.error('❌ Missing script:', script);
+              process.exit(1);
+            }
+          });
+        "
+    
+    - name: Test electron-builder config
+      run: |
+        echo "Testing electron-builder configuration..."
+        npx electron-builder --help > /dev/null
+        echo "✓ electron-builder is accessible"
+    
+    - name: Dry run build
+      run: |
+        echo "Running dry build test..."
+        npm run compile
+        npm run build
+        echo "✓ Build process completed successfully"
