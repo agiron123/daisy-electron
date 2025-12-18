@@ -1,25 +1,17 @@
 import { useState } from 'react'
-import Login from './Login'
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [user, setUser] = useState({ email: '', password: '' })
   const [count, setCount] = useState(0)
 
-  const handleLogin = (email: string, password: string) => {
-    setUser({ email, password })
-    setIsLoggedIn(true)
+  // Setup a simple mock user here.
+  const user = {
+    email: 'email@email.com',
+    name: 'User'
   }
 
   const handleLogout = () => {
-    setIsLoggedIn(false)
-    setUser({ email: '', password: '' })
-    setCount(0)
+    console.log('handleLogout clicked')
   }
-
-  // if (!isLoggedIn) {
-  //   return <Login onLogin={handleLogin} />
-  // }
 
   return (
     <div className="min-h-screen bg-base-200 flex items-center justify-center">
@@ -48,13 +40,13 @@ function App() {
           <div className="card-actions flex-wrap justify-center gap-2">
             <button 
               className="btn btn-primary"
-              onClick={() => setCount(count + 1)}
+              onClick={() => setCount(prevState => prevState + 1)}
             >
               Increment
             </button>
             <button 
               className="btn btn-secondary"
-              onClick={() => setCount(count - 1)}
+              onClick={() => setCount(prevState => prevState - 1)}
             >
               Decrement
             </button>
